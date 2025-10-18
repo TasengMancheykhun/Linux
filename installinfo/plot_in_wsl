@@ -1,0 +1,26 @@
+for gnuplot to work
+
+(1) Install Xming. 
+(2) execute export DISPLAY=:0 nameOfProgram (for example export DISPLAY=:0 gnuplot)
+
+
+-------------------------
+python3 -m venv ~/venv
+source ~/venv/bin/activate
+pip install numpy
+
+# to exit
+deactivate
+
+
+in bashrc, add this line: source ~/venv/bin/activate  
+
+
+for python3 to work 
+
+(1) After installing Xming. Set it up
+(2) In ~/.bashrc, export DISPLAY=:0
+(3) source ~/.bashrc
+
+
+

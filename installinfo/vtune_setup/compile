@@ -1,0 +1,26 @@
+Source the Environment Script
+
+To make the vtune command available, you need to set environment variables by sourcing the script:
+
+source /opt/intel/oneapi/vtune/latest/env/vars.sh
+
+Now try:
+
+vtune --help
+
+If this works, then VTune is installed correctly.
+🔹 3. Make It Permanent (Optional)
+
+To avoid sourcing every time, add the line below to your ~/.bashrc or ~/.zshrc:
+
+source /opt/intel/oneapi/vtune/latest/env/vars.sh
+
+Then reload your shell:
+
+source ~/.bashrc
+
+🔹 4. Try Profiling
+
+Now, try profiling your executable:
+
+vtune -collect hotspots -result-dir vtune_result ./your_executable

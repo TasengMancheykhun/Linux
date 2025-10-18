@@ -1,0 +1,7 @@
+Ensure correct profile setup: In your Windows Terminal settings, under your WSL profile, ensure the commandline setting uses wsl -d <distro_name> (e.g., wsl -d Ubuntu-22.04) instead of directly calling the executable (e.g., ubuntu2204.exe).
+
+
+Also change
+"startingDirectory": "~"
+
+This is done because when I change ubuntu.exe to wsl.exe -d Ubuntu, the starting directory becomes the /mnt/c/WINDOWS/system32, which I dont want.

@@ -1,0 +1,28 @@
+1) gugdga.prs is for creating hci.txt and transform Hartree Fock atomic orbital 
+   to ci molecular orbital of files like dipole.txt and other integrals 
+
+2) int1.prs contains in it code that transforms 
+   one-electron AO integral to MO for ci,
+   CAP AO integral to MO for ci, and 
+   Dipole AO integral to MO for ci
+   (Uncomment accordingly to convert what is needed)   
+   
+
+To get CAP in CI in stratch folder, Do this... 
+In scratch folder, Put CAP obtained in AO as com.txt and run gamess.
+This will create hci.txt in scratch. This is the cap in CI.
+
+To make the gamess.00.x of this, in source, modification in 
+specific places should be done as in the files gugdga.prs 
+and int1.prs. This must be done in gugdga.src and int1.src files
+in /gamess/source folder.(Always edit in the specific places in the source
+files. Do not copy and paste these .prs in the source folder. This is 
+because gamess version may be different.)  
+
+
+To get Nondipole terms in CI in stratch folder, put nondipole integrals 
+obtained in AO as dipole.txt and run gamess. This will create hci.txt in scratch. 
+This is the nondipole integral in CI. Note that Nondipole integrals are 
+complex numbers. So, put real part one time and imaginary part other time.
+
+

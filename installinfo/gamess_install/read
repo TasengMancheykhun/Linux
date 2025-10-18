@@ -1,0 +1,123 @@
+Date: 29/06/2025
+Date: 18/10/2025
+Author: Taseng
+
+reference: 
+https://www.webmo.net/support/gamess_linux.html
+
+
+# Installing GAMESS-US
+
+> copy gamess2020 source to home as gamess
+  > /media/taseng/OneTouch/3_transfer_to_wsl/home/taseng/aataseng/softwares
+
+> sudo apt-get install gfortran csh patch cmake
+> Inside the gamess folder allow +x to every script that you want to run
+  chmod +x <script> 
+> chmod +x config
+> cd gamess, ./config . If doesn't work try > csh config
+> Follow the steps as done in previously. Find in gamess2020/install.info
+> cd ddi
+> ./compddi >& compddi.log
+> mv ddikick.x ..
+> cd ..
+
+> chmod +x comp
+> ./compall >& compall.log (or) csh compall 
+
+> chmod +x lked
+> ./lked gamess 00 >& lked.log
+
+> mkdir ~/scr
+
+> chmod +x rungms
+> vim rungms
+  change ---> set SCR=/home/taseng/scr
+              set USERSCR=/home/taseng/scr
+              set GMSPATH=~/gamess
+
+
+> vim ~/.bashrc	
+  add line ---> alias rungms='~/gamess/rungms'
+
+> run a job
+  rungms h2o.inp >&h2o.out&
+
+
+# Modifying GAMESS-US for HF calculation
+
+## keep original gamess.00.x 
+> cp gamess.00.x gamess.00.original
+
+> cd ~/gamess/source/
+> edit int1.src, Search for comment 'PRASHANT' and make the needed changes
+> edit int2a.src, Search for comment 'ALKIT' and make the needed changes
+> edit prpel.src, Search for comment 'ALKIT' and make the needed changes
+
+> ./compall  
+
+  To catch error, you can try 
+  Example:- ./compall >&compall.log&       and look for error in this log file
+
+
+> ./lked gamess 00
+  Note: If there is any mistake, then on linking, new modified gamess.00.x will not be created
+  
+
+
+> Try running a job 
+  > rungms h.inp >&h.out&
+
+  Note: NPRINT=3   prints out property and 1e-integrals 
+        NPRINT=4   prints out 2e-integrals
+
+  > In ~/scr/, you find ---> dipole.txt  h.dat  onelec.txt  twelc.txt 
+
+> cp gamess.00.x gamess.00.hf
+
+
+
+# Modifying GAMESS-US for CI calculation
+
+# create gamess.00.hci
+> edit gugdga.src, Search for comment 'PRASHANT' 
+> edit int1.src, comment all the comment inside 'PRASHANT'
+> ./compall >&compall.log&       and look for error in this log file
+> ./lked gamess 00
+> rungms ci_h.inp ---> This will create hci.txt 
+> cp gamess.00.x gamess.00.hci
+
+
+# create gamess.00.comci
+> edit gugdga.src, Search for comment 'PRASHANT' 
+> edit int1.src, uncomment the comment inside 'PRASHANT' for com.txt
+> ./compall >&compall.log&       and look for error in this log file
+> ./lked gamess 00
+> in scr, put capao.txt as com.txt
+> rungms ci_h.inp ---> This will create hci.txt, the CAP in ci 
+> cp gamess.00.x gamess.00.comci
+
+
+# create gamess.00.diplci
+> edit gugdga.src, Search for comment 'PRASHANT' 
+> edit int1.src, uncomment the comment inside 'PRASHANT' for dipole.txt
+> ./compall >&compall.log&       and look for error in this log file
+> ./lked gamess 00
+> in scr, put dipole.txt as dipole.txt
+> rungms ci_h.inp ---> This will create hci.txt, the dipole file in ci 
+> cp gamess.00.x gamess.00.diplci
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,71 @@
+vtune: Error: Cannot start data collection because the scope of ptrace system call is limited. To enable profiling, please set /proc/sys/kernel/yama/ptrace_scope to 0. To make this change permanent, set kernel.yama.ptrace_scope to 0 in /etc/sysctl.d/10-ptrace.conf and reboot the machine.
+ChatGPT said:
+
+You're seeing this error because VTune requires permission to attach to a running process, and on modern Linux systems (including WSL), this is restricted by the ptrace_scope setting for security reasons.
+
+Here's how you can resolve this in WSL:
+✅ Temporary fix (until reboot):
+
+Run the following command in your WSL Ubuntu terminal:
+
+echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+
+    This temporarily sets ptrace_scope to 0, allowing VTune to attach to processes.
+
+✅ Permanent fix (survives reboot):
+
+    Open the file (or create it if it doesn't exist):
+
+sudo nano /etc/sysctl.d/10-ptrace.conf
+
+    Add the following line (or change if it already exists):
+
+kernel.yama.ptrace_scope = 0
+
+    Save and exit (Ctrl + O, Enter, then Ctrl + X)
+
+    Apply changes immediately without reboot:
+
+sudo sysctl --system
+
+✅ Verify the current value:
+
+cat /proc/sys/kernel/yama/ptrace_scope
+
+It should output:
+
+0
+
+
+// ----------------------------------------------
+
+The warning you're seeing from Intel VTune:
+
+    vtune: Warning: Only user space will be profiled due to credentials lack. Consider changing /proc/sys/kernel/perf_event_paranoid file for enabling kernel space profiling.
+
+means that VTune is restricted from collecting kernel-level performance data due to current system security settings.
+
+✅ Permanent fix (persists after reboot):
+
+Edit the sysctl config:
+
+sudo nano /etc/sysctl.d/10-perf.conf
+
+Add this line at the end (or create the file if it doesn’t exist):
+
+kernel.perf_event_paranoid = 0
+
+Then apply the change:
+
+sudo sysctl --system
+
+✅ Verify current setting:
+
+cat /proc/sys/kernel/perf_event_paranoid
+
+Should show 0 after applying the fix.
+
+Let me know if you're using WSL, and I’ll tailor the instructions (some settings may be overridden by Windows on WSL startup).
+
+
+
